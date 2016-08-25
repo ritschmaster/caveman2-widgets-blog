@@ -1,0 +1,48 @@
+* Caveman2-Widgets-Blog
+This is an example application to demonstrate [[https://github.com/ritschmaster/caveman2-widgets][Caveman2-Widgets]].
+
+** Installation
+Clone this git-repository into "~/quicklisp/local-projects" or
+"~/.roswell/local-projects" (if you are using [[https://github.com/roswell/roswell][Roswell]]).
+#+LATEX: \\\\
+To create and use the SQLite3 Database run the following in the cloned
+directory:
+#+BEGIN_SRC bash
+make
+#+END_SRC
+#+LATEX: \\\\
+If you want to use this application with MySQL please execute the
+*db/create-mysql.sql* script on your server. It creates the neccessary
+database "blog" with the user "blog" and the password "blog". You can
+change the passwords afterwards.
+** Usage
+*** With SQLite3 database
+If you want to run this application with the SQLite3 database you have
+to start your Lisp with:
+#+BEGIN_SRC lisp
+export APP_ENV="production"
+sbcl # or whatever you use
+#+END_SRC
+
+*** With MySQL database
+To use the mysql database you have to start your Lisp like that:
+#+BEGIN_SRC lisp
+export APP_ENV="production"
+sbcl # or whatever you use
+#+END_SRC
+
+*** Starting it
+To start it on port 8080 use:
+#+BEGIN_SRC lisp
+(ql:quickload :caveman2-widgets-blog)
+(caveman2-widgets-blog:start :port 8080 :server :hunchentoot)
+#+END_SRC
+
+** Author
+- Richard Paul Bäck (richard.baeck@free-your-pc.com)
+
+** Copyright
+Copyright (c) 2016 Richard Paul Bäck (richard.baeck@free-your-pc.com)
+
+** License
+Licensed under the GPLv3 License.
