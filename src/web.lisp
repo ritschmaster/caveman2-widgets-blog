@@ -20,6 +20,7 @@
 (in-package :cl-user)
 (defpackage caveman2-widgets-blog.web
   (:use :cl
+        :cl-ppcre
         :caveman2
         :caveman2-widgets
         :caveman2-widgets-bootstrap
@@ -61,7 +62,9 @@
 
 (defmethod render-widget ((this <blog-post-widget>))
   (render "blogpost.html"
-          (list :blog-id (id (post this))
+          (list :blog-id (regex-replace-all " "
+                                            (title (post this))
+                                            "-")
                 :blog-title (title (post this))
                 :blog-date (date (post this))
                 :blog-text (nth-value 1
