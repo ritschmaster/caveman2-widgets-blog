@@ -30,36 +30,16 @@ CREATE USER 'blog'@'localhost' IDENTIFIED BY 'blog';
     'blog'@'localhost'WITH GRANT OPTION;
 
     USE `blog`;
+--------------------------------------------------------------------------------
 
--- --------------------------------------------------------
-
-    --
+--
 -- Table structure for table `blogpost`
-    --
+--
+CREATE TABLE blogpost (
+        id int(11) NOT NULL auto_increment,
+        date char(21) DEFAULT NULL,
+        title varchar(50) NOT NULL,
+        text varchar(50000) DEFAULT NULL,
 
-CREATE TABLE IF NOT EXISTS `blogpost` (
-        `id` int(11) NOT NULL,
-        `date` char(21) DEFAULT NULL,
-        `title` varchar(50) NOT NULL,
-        `text` varchar(50000) DEFAULT NULL 
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-    --
--- Indexes for dumped tables
-    --
-
-    --
--- Indexes for table `blogpost`
-    --
-    ALTER TABLE `blogpost`
-    ADD PRIMARY KEY (`id`);
-
-    --
--- AUTO_INCREMENT for dumped tables
-    --
-
-    --
--- AUTO_INCREMENT for table `blogpost`
-    --
-    ALTER TABLE `blogpost`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+        PRIMARY KEY (id)
+        );

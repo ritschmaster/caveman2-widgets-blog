@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+body {
+    font-size: 12pt;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+}
+
+a:link {
+    color: #005585;
+    text-decoration: none;
+}
+a:visited {
+    color: #485270;
+}
+a:hover {
+    color: #b83800;
+    text-decoration: underline;
+}
+
+h1 {
+    padding-left: 14%;
+    padding-right: 14%;
+    padding-bottom: 40px;
+}
+
+p {
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.contact-widget {
+        padding-top: 30px;
+}
+
+.contact-widget .contact-table {
+    font-size: 15pt;
+    padding-bottom: 50px;
+}

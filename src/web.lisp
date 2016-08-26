@@ -108,6 +108,9 @@
 (defmethod initialize-instance :after ((this <blog-header-widget>) &key)
   (append-item this
                (make-instance '<css-file>
+                              :path "/css/main.css"))
+  (append-item this
+               (make-instance '<css-file>
                               :path "/css/blog.css")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
