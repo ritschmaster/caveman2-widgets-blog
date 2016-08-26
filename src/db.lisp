@@ -23,6 +23,7 @@
         :crane
         :caveman2-widgets-blog.config)
   (:export :blogpost
+           :id
            :date
            :title
            :text))
