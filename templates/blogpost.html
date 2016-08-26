@@ -1,5 +1,9 @@
 <div>
-  <h2>{{ blog.title }}</h2>
-  <h3>{{ blog.date }}</h3>
-  <p>{{ blog.text }}</p>
+  <h2>{{ blog-title }}</h2>
+  <h4>{{ blog-date }}</h3>
+  <div>
+    {% autoescape off %}
+    {{ blog-text }}
+    {% endautoescape %}
+  </div>
 </div>

@@ -23,11 +23,18 @@
         :caveman2
         :caveman2-widgets
         :caveman2-widgets-bootstrap
+
         :caveman2-widgets-blog.config
-        :caveman2-widgets-blog.view
-        :caveman2-widgets-blog.db)
+        :caveman2-widgets-blog.view)
+  (:shadowing-import-from :caveman2-widgets-blog.db
+                          :blogpost
+                          :date
+                          :title
+                          :text)
   (:import-from :crane
                 :filter)
+  (:import-from :cl-markdown
+                :markdown)
   (:export :*web*))
 (in-package :caveman2-widgets-blog.web)
 
@@ -53,11 +60,17 @@
 
 (defmethod render-widget ((this <blog-post-widget>))
   (render "blogpost.html"
-          (list :blog (post this))))
+          (list :blog-title (title (post this))
+                :blog-date (date (post this))
+                :blog-text (nth-value 1
+                                      (markdown (text (post this))
+                                                :format :html
+                                                :stream nil)))))
 
 (defclass <blog-page-widget> (<composite-widget>)
   ()
   (:default-initargs
+   ;; This sets the widgets only at compile time!
    :widgets (mapcar (lambda (item)
                       (make-widget :global '<blog-post-widget>
                                    :post item))

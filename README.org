@@ -38,6 +38,18 @@ To start it on port 8080 use:
 (caveman2-widgets-blog:start :port 8080 :server :hunchentoot)
 #+END_SRC
 
+*** Inserting blog posts
+Formating rules:
+- TITLE :: Should be an unfomatted string
+- DATE :: Should be YYYY-MM-DD
+- TEXT :: A markdown string. Please be careful with '#' as the title
+          will be a H2.
+
+Currently you have to use SQL to insert new blog posts. For example:
+#+BEGIN_SRC sql
+insert into blogpost(`date`, `title`, `text`)
+  VALUES ("2016-", "My first post", "*Hello world*")
+#+END_SRC
 ** Author
 - Richard Paul Bäck (richard.baeck@free-your-pc.com)
 

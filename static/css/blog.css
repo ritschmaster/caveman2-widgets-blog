@@ -38,7 +38,9 @@ p {
     padding-right: 15%;
 }
 
-.blog-post-widget p {
+.blog-post-widget h1,
+.blog-post-widget p
+{
     padding-left: 0%;
     padding-right: 0%;
 }
