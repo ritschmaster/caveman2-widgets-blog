@@ -53,6 +53,5 @@
      nil
      (lambda (app)
        (lambda (env)
-         (let ((datafly:*trace-sql* t))
-           (funcall app env)))))
+         (funcall app env))))
  *web*)

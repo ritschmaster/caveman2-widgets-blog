@@ -21,6 +21,5 @@ create table blogpost(
         id integer primary key,
         date char(21), -- e.g. 2015-05-14 - 21:14:40
         title varchar(50) not null,
-        text varchar(50000),
-        blog_categoryid int(11) not null
+        text varchar(50000)
         );

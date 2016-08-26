@@ -34,21 +34,38 @@
 
 (setf (config-env-var) "APP_ENV")
 
-(defparameter *application-root*   (asdf:system-source-directory :caveman2-widgets-blog))
-(defparameter *static-directory*   (merge-pathnames #P"static/" *application-root*))
-(defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
+(defparameter *application-root*
+  (asdf:system-source-directory :caveman2-widgets-blog))
+(defparameter *static-directory* (merge-pathnames #P"static/"
+                                                  *application-root*))
+(defparameter *template-directory* (merge-pathnames #P"templates/"
+                                                    *application-root*))
+(defparameter *sqlite-db* (merge-pathnames #p"blog.db"
+                                           *application-root*))
 
 (defconfig :common
-  `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
+    (list ))
 
 (defconfig |development|
-  '())
+    (list :debug t
+          :database-debug nil
+          :database-connection-spec
+          (list
+           :database-type :sqlite3
+           :database-name *sqlite-db*)))
 
 (defconfig |production|
-  '())
+    (list :debug nil
+          :database-debug nil
+          :database-connection-spec
+          (list
+           :database-type :mysql
+           :database-name "blog"
+           :username "blog"
+           :password "blog")))
 
 (defconfig |test|
-  '())
+    (list ))
 
 (defun config (&optional key)
   (envy:config #.(package-name *package*) key))

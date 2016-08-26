@@ -41,8 +41,7 @@ CREATE TABLE IF NOT EXISTS `blogpost` (
         `id` int(11) NOT NULL,
         `date` char(21) DEFAULT NULL,
         `title` varchar(50) NOT NULL,
-        `text` varchar(50000) DEFAULT NULL,
-        `blog_categoryid` int(11) NOT NULL
+        `text` varchar(50000) DEFAULT NULL 
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
     --

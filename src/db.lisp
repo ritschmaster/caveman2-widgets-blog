@@ -19,23 +19,53 @@
 
 (in-package :cl-user)
 (defpackage caveman2-widgets-blog.db
-  (:use :cl)
-  (:import-from :caveman2-widgets-blog.config
-                :config)
-  (:import-from :datafly
-                :*connection*
-                :connect-cached)
-  (:export :connection-settings
-           :db
-           :with-connection))
+  (:use :cl
+        :crane
+        :caveman2-widgets-blog.config)
+  (:export :blogpost
+           :date
+           :title
+           :text))
 (in-package :caveman2-widgets-blog.db)
 
-(defun connection-settings (&optional (db :maindb))
-  (cdr (assoc db (config :databases))))
+(setup
+ :migrations-directory (merge-pathnames
+                        *application-root*
+                        #p"migrations")
+ :databases
+ (list :main
+       (append
+        (list
+         :type (getf (config :database-connection-spec)
+                     :database-type)
+         :name (getf (config :database-connection-spec)
+                     :database-name))
+        (if (getf (config :database-connection-spec)
+                  :username)
+            (list
+             :user (getf (config :database-connection-spec)
+                         :username)
 
-(defun db (&optional (db :maindb))
-  (apply #'connect-cached (connection-settings db)))
+             :pass (getf (config :database-connection-spec)
+                         :password))
+            nil)))
+ :debug (config :database-debug))
 
-(defmacro with-connection (conn &body body)
-  `(let ((*connection* ,conn))
-     ,@body))
+(connect)
+
+(definflate (str 'string)
+    ;; when the database attribute is NIL the string "NULL" is returned
+    (if (string= str "NULL")
+        nil
+        str))
+(defdeflate (string string) string)
+
+;; Needed to retrieve rounded doubles
+(definflate (dbl 'double) (read-from-string (format nil "~,4f" dbl)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ORM classes:
+(crane:deftable blogpost ()
+  (date :type string :nullp nil)
+  (title :type string :nullp nil)
+  (text :type string :nullp t))

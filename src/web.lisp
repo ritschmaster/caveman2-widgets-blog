@@ -21,20 +21,21 @@
 (defpackage caveman2-widgets-blog.web
   (:use :cl
         :caveman2
+        :caveman2-widgets
+        :caveman2-widgets-bootstrap
         :caveman2-widgets-blog.config
         :caveman2-widgets-blog.view
-        :caveman2-widgets-blog.db
-        :datafly
-        :sxql)
+        :caveman2-widgets-blog.db)
+  (:import-from :crane
+                :filter)
   (:export :*web*))
 (in-package :caveman2-widgets-blog.web)
 
 ;; for @route annotation
 (syntax:use-syntax :annot)
 
-;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Application
-
 (defclass <web> (<app>) ())
 (defvar *web* (make-instance '<web>))
 (clear-routing-rules *web*)
@@ -42,12 +43,54 @@
 (init-widgets *web*)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Widget classes
+(defclass <blog-post-widget> (<widget>)
+  ((post
+    :initarg :post
+    :initform (error "Must supply a BLOGPOST object.")
+    :reader post)))
 
-;;
-;; Routing rules
+(defmethod render-widget ((this <blog-post-widget>))
+  (render "blogpost.html"
+          (list :blog (post this))))
 
-(defroute "/" ()
-  (render #P"index.html"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Other classes
+(defclass <blog-header-widget> (<header-widget>)
+  ())
+
+(defmethod initialize-instance :after ((this <blog-header-widget>) &key)
+  (append-item this
+               (make-instance '<css-file>
+                              :path "/static/css/blog.css")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Global widgets
+(defvar *header-widget*
+  (make-instance '<bootstrap-header-widget>
+                 :title "Blog"))
+
+(defvar *blog-widget*
+  (make-widget :global '<composite-widget>
+               :widgets
+               (mapcar (lambda (item)
+                         (make-widget :global '<blog-post-widget>
+                                      :post item))
+                       (filter 'blogpost))))
+
+(defvar *contact-widget*
+  (make-widget :global '<string-widget>
+               :text "hello"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Routes
+(defnav "/"
+    (*header-widget*
+     (list
+      (list "Blog" "blog" *blog-widget*)
+      (list "Contact" "contact" *contact-widget*))
+     :kind '<bootstrap-menu-navigation-widget>))
 
 ;;
 ;; Error pages
