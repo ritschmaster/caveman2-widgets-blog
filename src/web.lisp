@@ -55,33 +55,52 @@
   (render "blogpost.html"
           (list :blog (post this))))
 
+(defclass <blog-page-widget> (<composite-widget>)
+  ()
+  (:default-initargs
+   :widgets (mapcar (lambda (item)
+                      (make-widget :global '<blog-post-widget>
+                                   :post item))
+                    (filter 'blogpost))))
+
+(defmethod render-widget ((this <blog-page-widget>))
+  (concatenate 'string
+               (render "blog-page.html"
+                       (list :title "Blog"))
+               (call-next-method this)))
+
+(defclass <contact-widget> (<widget>)
+  ())
+
+(defmethod render-widget ((this <contact-widget>))
+  (render "contact-page.html"
+          (list :title "Contact"
+                :name "Richard Paul Bäck"
+                :street "Haupstraße 46"
+                :postalcode "A-3314"
+                :place "Strengberg, Lower Austria, Austria")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Other classes
-(defclass <blog-header-widget> (<header-widget>)
+(defclass <blog-header-widget> (<bootstrap-header-widget>)
   ())
 
 (defmethod initialize-instance :after ((this <blog-header-widget>) &key)
   (append-item this
                (make-instance '<css-file>
-                              :path "/static/css/blog.css")))
+                              :path "/css/blog.css")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Global widgets
 (defvar *header-widget*
-  (make-instance '<bootstrap-header-widget>
+  (make-instance '<blog-header-widget>
                  :title "Blog"))
 
 (defvar *blog-widget*
-  (make-widget :global '<composite-widget>
-               :widgets
-               (mapcar (lambda (item)
-                         (make-widget :global '<blog-post-widget>
-                                      :post item))
-                       (filter 'blogpost))))
+  (make-widget :global '<blog-page-widget>))
 
 (defvar *contact-widget*
-  (make-widget :global '<string-widget>
-               :text "hello"))
+  (make-widget :global '<contact-widget>))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Routes

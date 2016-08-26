@@ -23,7 +23,7 @@
 (in-package :caveman2-widgets-blog-asd)
 
 (defsystem caveman2-widgets-blog
-  :version "0.1"
+  :version "1.0"
   :author "Richard Paul Bäck"
   :license "GPLv3"
   :depends-on (:clack

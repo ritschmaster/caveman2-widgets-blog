@@ -1,4 +1,49 @@
-.blog-widget {
+@charset "UTF-8";
+
+body {
+    font-size: 12pt;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+}
+
+a:link {
+    color: #005585;
+    text-decoration: none;
+}
+a:visited {
+    color: #485270;
+}
+a:hover {
+    color: #b83800;
+    text-decoration: underline;
+}
+
+.blog-page-widget,
+.contact-widget {
+    padding-top: 30px;
+}
+
+h1 {
+    padding-left: 14%;
+    padding-right: 14%;
+    padding-bottom: 40px;
+}
+
+.blog-page-widget .item {
+    padding-bottom: 50px;
+}
+
+.blog-post-widget,
+p {
     padding-left: 15%;
     padding-right: 15%;
+}
+
+.blog-post-widget p {
+    padding-left: 0%;
+    padding-right: 0%;
+}
+
+.contact-widget .contact-table {
+    font-size: 15pt;
+    padding-bottom: 50px;
 }
