@@ -32,7 +32,7 @@
                           :id
                           :date
                           :title
-                          :text)
+                          :text_filename)
   (:import-from :crane
                 :filter)
   (:import-from :cl-markdown
@@ -67,10 +67,14 @@
                                             "-")
                 :blog-title (title (post this))
                 :blog-date (date (post this))
-                :blog-text (nth-value 1
-                                      (markdown (text (post this))
-                                                :format :html
-                                                :stream nil)))))
+                :blog-text
+                (nth-value 1
+                           (markdown (merge-pathnames
+                                      (pathname
+                                       (text_filename (post this)))
+                                      *blog-directory*)
+                                     :format :html
+                                     :stream nil)))))
 
 (defclass <blog-page-widget> (<composite-widget>)
   ()

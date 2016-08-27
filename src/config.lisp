@@ -27,6 +27,7 @@
            :*application-root*
            :*static-directory*
            :*template-directory*
+           :*blog-directory*
            :appenv
            :developmentp
            :productionp))
@@ -42,6 +43,8 @@
                                                     *application-root*))
 (defparameter *sqlite-db* (merge-pathnames #p"blog.db"
                                            *application-root*))
+(defparameter *blog-directory* (merge-pathnames #P"blog/"
+                                                *application-root*))
 
 (defconfig :common
     (list ))

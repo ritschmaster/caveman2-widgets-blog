@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 -- Copyright (C) 2016 Richard Bäck <richard.baeck@free-your-pc.com>
 --
 -- This file is part of caveman2-widgets-blog.
@@ -15,11 +15,11 @@
 --
 -- You should have received a copy of the GNU General Public License along with
 -- caveman2-widgets-blog.  If not, see <http://www.gnu.org/licenses/>.
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
 create table blogpost(
         id integer primary key,
         date char(21), -- e.g. 2015-05-14 - 21:14:40
         title varchar(50) not null,
-        text varchar(50000)
+        text_filename varchar(400)
         );

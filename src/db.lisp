@@ -26,7 +26,7 @@
            :id
            :date
            :title
-           :text))
+           :text_filename))
 (in-package :caveman2-widgets-blog.db)
 
 (setup
@@ -65,8 +65,15 @@
 (definflate (dbl 'double) (read-from-string (format nil "~,4f" dbl)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; This is a workaround for a bug in cl-mysql. It allows to read UTF8
+;; strings.
+(when (not (config :debug))
+  (eval (read-from-string "(cl-mysql:query \"set names 'utf8'\")")))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ORM classes:
 (crane:deftable blogpost ()
   (date :type string :nullp nil)
   (title :type string :nullp nil)
-  (text :type string :nullp t))
+  (text_filename :type string :nullp t))

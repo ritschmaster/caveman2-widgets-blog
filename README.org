@@ -42,13 +42,29 @@ To start it on port 8080 use:
 Formating rules:
 - TITLE :: Should be an unfomatted string
 - DATE :: Should be YYYY-MM-DD
-- TEXT :: A markdown string. Please be careful with '#' as the title
-          will be a H2.
+- TEXT_FILENAME :: A file in the blog/ directory. It must be formatted
+                   with markdown. Please be careful with '#' as the
+                   title will be a H2.
+
+When writing markdown text please be careful, following characters
+must be escaped by a backslash:
+- \   backslash
+- `   backtick
+- *   asterisk
+- _   underscore
+- {}  curly braces
+- []  square brackets
+- ()  parentheses
+- #   hash mark
+- +       plus sign
+- -       minus sign (hyphen)
+- .   dot
+- !   exclamation mark
 
 Currently you have to use SQL to insert new blog posts. For example:
 #+BEGIN_SRC sql
 insert into blogpost(`date`, `title`, `text`)
-  VALUES ("2016-", "My first post", "*Hello world*")
+  VALUES ("2016-", "My first post", "MyFirstPost.md")
 #+END_SRC
 ** Author
 - Richard Paul Bäck (richard.baeck@free-your-pc.com)

@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 -- Copyright (C) 2016 Richard Bäck <richard.baeck@free-your-pc.com>
 --
 -- This file is part of caveman2-widgets-blog.
@@ -15,7 +15,7 @@
 --
 -- You should have received a copy of the GNU General Public License along with
 -- caveman2-widgets-blog.  If not, see <http://www.gnu.org/licenses/>.
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
 CREATE DATABASE IF NOT EXISTS `blog` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 
@@ -30,7 +30,7 @@ CREATE USER 'blog'@'localhost' IDENTIFIED BY 'blog';
     'blog'@'localhost'WITH GRANT OPTION;
 
     USE `blog`;
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
 --
 -- Table structure for table `blogpost`
@@ -39,7 +39,7 @@ CREATE TABLE blogpost (
         id int(11) NOT NULL auto_increment,
         date char(21) DEFAULT NULL,
         title varchar(50) NOT NULL,
-        text varchar(50000) DEFAULT NULL,
+        text_filename varchar(400) DEFAULT NULL,
 
         PRIMARY KEY (id)
         );
