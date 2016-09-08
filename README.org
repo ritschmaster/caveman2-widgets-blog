@@ -1,6 +1,6 @@
 * Caveman2-Widgets-Blog
 This is an example application to demonstrate [[https://github.com/ritschmaster/caveman2-widgets][Caveman2-Widgets]]. I am
-running my own blog with this code as base [[https://free-your-pc.com/blog][here]].
+running my own blog based on this example application [[https://free-your-pc.com/blog][here]].
 
 ** Installation
 Clone this git-repository into "~/quicklisp/local-projects" or

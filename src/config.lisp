@@ -28,6 +28,7 @@
            :*static-directory*
            :*template-directory*
            :*blog-directory*
+           :*month-list*
            :appenv
            :developmentp
            :productionp))
@@ -45,6 +46,12 @@
                                            *application-root*))
 (defparameter *blog-directory* (merge-pathnames #P"blog/"
                                                 *application-root*))
+
+(defparameter *month-list*
+  '((1 "January") (2 "Feburary") (3 "March") (4 "April")
+    (5 "May") (6 "June") (7 "July") (8 "August")
+    (9 "September") (10 "October") (11 "November")
+    (12 "December")))
 
 (defconfig :common
     (list ))

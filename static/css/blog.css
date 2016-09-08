@@ -17,3 +17,12 @@
     padding-left: 0%;
     padding-right: 0%;
 }
+
+.blog-page-widget .border-widget .west {
+    padding-top: 50px;
+    width: 10em;
+}
+
+.blog-post-chooser-widget .item {
+    padding-bottom: 0px;
+}
