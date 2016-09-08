@@ -116,7 +116,9 @@
                               nil)))))
   (concatenate 'string
                (render "blog-page.html"
-                       (list :title "Blog"))
+                       (list :title (funcall
+                                     caveman2-widgets.util:+translate+
+                                     "My Blog")))
                (call-next-method this)))
 ;; <BLOG-WIDGET> ENDS HERE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
