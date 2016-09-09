@@ -265,7 +265,7 @@
   (setf (ningle:route *web*
                       (concatenate
                        'string
-                       "/blog/"
+                       *blog-entries-path*
                        (regex-replace-all " "
                                           (title post)
                                           "-"))

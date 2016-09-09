@@ -29,6 +29,7 @@
            :*template-directory*
            :*blog-directory*
            :*month-list*
+           :*blog-entries-path*
            :appenv
            :developmentp
            :productionp))
@@ -52,6 +53,9 @@
     (5 "May") (6 "June") (7 "July") (8 "August")
     (9 "September") (10 "October") (11 "November")
     (12 "December")))
+
+(defparameter *blog-entries-path* "/"
+  "Must include a starting and trailing slash.")
 
 (defconfig :common
     (list ))
