@@ -97,9 +97,6 @@
     :accessor display-year)))
 
 (defmethod render-widget ((this <blog-widget>))
-  (print (display-year this))
-  (print 
-   (display-month this))
   (setf (widgets this)
         (mapcar #'(lambda (item)
                   (make-widget :session '<blog-post-widget>
@@ -164,7 +161,6 @@
 
 (defmethod render-widget ((this <blog-post-chooser-widget>))
   (create-blog-widget)
-  (setf (widgets this)nil)
   (when (null (widgets this))
     (dolist (tuple (get-year-months-of-blogs))
       (append-item this
@@ -262,6 +258,27 @@
       (list "Blog" "blog" *blog-widget*)
       (list "Contact" "contact" *contact-widget*))
      :kind '<bootstrap-menu-navigation-widget>))
+
+;; This creates an URL for each blog entry which makes the app more friendly to
+;; search engines.
+(dolist (post (filter 'blogpost))
+  (setf (ningle:route *web*
+                      (concatenate
+                       'string
+                       "/blog/"
+                       (regex-replace-all " "
+                                          (title post)
+                                          "-"))
+                      :method :get)
+        #'(lambda (params)
+            (create-blog-widget)
+            (let ((blog-widget (get-widget-for-session
+                                :blog-widget)))
+              (setf (display-year blog-widget)
+                    (get-year-of-date-string (date post)))
+              (setf (display-month blog-widget)
+                    (get-month-of-date-string (date post)))
+              (redirect "/")))))
 
 ;;
 ;; Error pages
