@@ -21,12 +21,15 @@ change the passwords afterwards.
 If you want to run this application with the SQLite3 database you have
 to start your Lisp with:
 #+BEGIN_SRC lisp
-export APP_ENV="production"
+export APP_ENV="development"
 sbcl # or whatever you use
 #+END_SRC
 
 *** With MySQL database
-To use the mysql database you have to start your Lisp like that:
+To use the mysql database you have to set the database name, user name
+and the password in the /src\/config/ first. Currently the MySQL
+instance has to run on the localhost. Afterwards you have start your
+Lisp by using:
 #+BEGIN_SRC lisp
 export APP_ENV="production"
 sbcl # or whatever you use
