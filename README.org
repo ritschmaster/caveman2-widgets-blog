@@ -67,9 +67,20 @@ must be escaped by a backslash:
 
 Currently you have to use SQL to insert new blog posts. For example:
 #+BEGIN_SRC sql
-insert into blogpost(`date`, `title`, `text`)
+insert into blogpost(`date`, `title`, `text_filename`)
   VALUES ("2016-", "My first post", "MyFirstPost.md")
 #+END_SRC
+
+*** Accessing posts
+The posts in the database are ordered:
+- Descending in year
+- In years descending in months
+- In months descending in days
+
+Additionally you can access each post by its title as URI. So each
+post can be exposed through a [[https://support.google.com/webmasters/answer/156184?hl%3Den][sitemap]] to a search engine. Please
+notice that blanks are replaced by a hyphen.
+
 ** Author
 - Richard Paul Bäck (richard.baeck@free-your-pc.com)
 

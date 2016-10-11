@@ -94,23 +94,29 @@
           (second minute hour date month year day-of-week dst-p tz)
         (get-decoded-time)
       year)
-    :accessor display-year)))
+    :accessor display-year)
+   (reset-widgets
+    :initform t
+    :accessor reset-widgets
+    :documentation "When NIL the widgets will not be reset.")))
 
 (defmethod render-widget ((this <blog-widget>))
-  (setf (widgets this)
-        (mapcar #'(lambda (item)
-                  (make-widget :session '<blog-post-widget>
-                               :post item))
-                (sort (filter 'blogpost
-                              (:like
-                               :date
-                               (format nil "~a-~2,'0d%"
-                                             (display-year this)
-                                             (display-month this))))
-                      #'(lambda (first second)
-                          (if (> (id first) (id second))
-                              t
-                              nil)))))
+  (when (reset-widgets this)
+    (setf (widgets this)
+          (mapcar #'(lambda (item)
+                      (make-widget :session '<blog-post-widget>
+                                   :post item))
+                  (sort (filter 'blogpost
+                                (:like
+                                 :date
+                                 (format nil "~a-~2,'0d%"
+                                         (display-year this)
+                                         (display-month this))))
+                        #'(lambda (first second)
+                            (if (> (id first) (id second))
+                                t
+                                nil))))))
+
   (concatenate 'string
                (render "blog-page.html"
                        (list :title (funcall
@@ -165,8 +171,8 @@
     (dolist (tuple (get-year-months-of-blogs))
       (append-item this
                    (make-widget :session '<string-widget>
-                                     :text (format nil "<h3>~a</h3>"
-                                                   (car tuple))))
+                                :text (format nil "<h3>~a</h3>"
+                                              (car tuple))))
       (dolist (month (cdr tuple))
         (append-item this
                      (make-widget
@@ -175,7 +181,8 @@
                       :callback
                       #'(lambda (args)
                           (let ((blog-widget
-                                  (get-widget-for-session :blog-widget)))
+                                 (get-widget-for-session :blog-widget)))
+                            (setf (reset-widgets blog-widget) t)
                             (setf (display-year blog-widget)
                                   (first tuple))
                             (setf (display-month blog-widget)
@@ -261,6 +268,24 @@
 
 ;; This creates an URL for each blog entry which makes the app more friendly to
 ;; search engines.
+;; (dolist (post (filter 'blogpost))
+;;   (setf (ningle:route *web*
+;;                       (concatenate
+;;                        'string
+;;                        *blog-entries-path*
+;;                        (regex-replace-all " "
+;;                                           (title post)
+;;                                           "-"))
+;;                       :method :get)
+;;         #'(lambda (params)
+;;             (create-blog-widget)
+;;             (let ((blog-widget (get-widget-for-session
+;;                                 :blog-widget)))
+;;               (setf (display-year blog-widget)
+;;                     (get-year-of-date-string (date post)))
+;;               (setf (display-month blog-widget)
+;;                     (get-month-of-date-string (date post)))
+;;               (redirect "/")))))
 (dolist (post (filter 'blogpost))
   (setf (ningle:route *web*
                       (concatenate
@@ -274,10 +299,11 @@
             (create-blog-widget)
             (let ((blog-widget (get-widget-for-session
                                 :blog-widget)))
-              (setf (display-year blog-widget)
-                    (get-year-of-date-string (date post)))
-              (setf (display-month blog-widget)
-                    (get-month-of-date-string (date post)))
+              (setf (reset-widgets blog-widget) nil)
+              (setf (widgets blog-widget)
+                    (list
+                     (make-widget :session '<blog-post-widget>
+                                  :post post)))
               (redirect "/")))))
 
 ;;
