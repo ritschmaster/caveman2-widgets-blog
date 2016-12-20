@@ -156,10 +156,10 @@
                       (list (list post-year)))))
       (setf tuple (assoc post-year tuples))
       (when (not (find post-month tuple))
-       (setf (cdr tuple)
-             (sort (append (cdr tuple)
-                           (list post-month))
-                   #'>))))
+        (setf (cdr tuple)
+              (sort (append (cdr tuple)
+                            (list post-month))
+                    #'>))))
     tuples))
 
 (defclass <blog-post-chooser-widget> (<composite-widget>)
@@ -188,7 +188,31 @@
                             (setf (display-month blog-widget)
                                   month)
                             (mark-dirty blog-widget)
-                            "")))))))
+                            ""))))
+        (dolist (post (filter 'blogpost (:like :date (format nil "~a-~2,'0d%"
+                                                             (car tuple)
+                                                             month))))
+          (append-item
+           this
+           (make-widget
+            :session '<function-widget>
+            :function #'(lambda ()
+                          (format nil "<div class=\"post-link-indented\">~a</div>"
+                                  (render-widget
+                                   (make-widget
+                                    :session '<link-widget>
+                                    :label (title post)
+                                    :callback
+                                    #'(lambda (args)
+                                        (let ((blog-widget (get-widget-for-session
+                                                            :blog-widget)))
+                                          (setf (reset-widgets blog-widget) nil)
+                                          (setf (widgets blog-widget)
+                                                (list
+                                                 (make-widget :session '<blog-post-widget>
+                                                              :post post)))
+                                          (mark-dirty blog-widget)
+                                          ""))))))))))))
   (call-next-method this))
 ;; <BLOG-POST-CHOOSER-WIDGET> ENDS HERE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -268,24 +292,6 @@
 
 ;; This creates an URL for each blog entry which makes the app more friendly to
 ;; search engines.
-;; (dolist (post (filter 'blogpost))
-;;   (setf (ningle:route *web*
-;;                       (concatenate
-;;                        'string
-;;                        *blog-entries-path*
-;;                        (regex-replace-all " "
-;;                                           (title post)
-;;                                           "-"))
-;;                       :method :get)
-;;         #'(lambda (params)
-;;             (create-blog-widget)
-;;             (let ((blog-widget (get-widget-for-session
-;;                                 :blog-widget)))
-;;               (setf (display-year blog-widget)
-;;                     (get-year-of-date-string (date post)))
-;;               (setf (display-month blog-widget)
-;;                     (get-month-of-date-string (date post)))
-;;               (redirect "/")))))
 (dolist (post (filter 'blogpost))
   (setf (ningle:route *web*
                       (concatenate
